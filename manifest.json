@@ -1,0 +1,9 @@
+{
+  "name": "Mes rappels ❤️",
+  "short_name": "Rappels ❤️",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f1eb",
+  "theme_color": "#314f3d",
+  "description": "Une petite application personnelle de rappels."
+}
