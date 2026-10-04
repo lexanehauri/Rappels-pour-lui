@@ -418,7 +418,7 @@ const db =
        CONNEXION
     ========================= */
 
-    async function requestNotificationPermission() {
+    async function requestNotificationPermission(user) {
 
   const permission =
     await Notification.requestPermission();
