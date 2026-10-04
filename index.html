@@ -335,43 +335,55 @@ import {
     };
 
 
-    const firebaseApp =
-      initializeApp(firebaseConfig);
+   const firebaseApp =
+  initializeApp(firebaseConfig);
 
-    const messaging =
+const messaging =
   getMessaging(firebaseApp);
 
-getToken(messaging, {
-  vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z8nQxvE"
-})
-.then((token) => {
+navigator.serviceWorker
+  .register("./firebase-messaging-sw.js")
+  .then((registration) => {
 
-  console.log(
-    "TOKEN FCM :",
-    token
-  );
+    return getToken(messaging, {
+      vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z8nQxvE",
+      serviceWorkerRegistration: registration
+    });
 
-  alert(
-    token
-      ? "TOKEN FCM récupéré ❤️"
-      : "PAS DE TOKEN"
-  );
-  
-})
-.catch((error) => {
+  })
+  .then((token) => {
 
-  console.error(
-    "ERREUR TOKEN FCM :",
-    error
-  );
+    console.log(
+      "TOKEN FCM :",
+      token
+    );
 
-});
-    
-    const auth =
-      getAuth(firebaseApp);
+    alert(
+      token
+        ? "TOKEN FCM récupéré ❤️"
+        : "PAS DE TOKEN"
+    );
 
-    const db =
-      getFirestore(firebaseApp);
+  })
+  .catch((error) => {
+
+    console.error(
+      "ERREUR TOKEN FCM :",
+      error
+    );
+
+    alert(
+      "Erreur FCM : " +
+      error.message
+    );
+
+  });
+
+const auth =
+  getAuth(firebaseApp);
+
+const db =
+  getFirestore(firebaseApp);
 
     Notification.requestPermission().then((permission) => {
   console.log("Permission notifications :", permission);
