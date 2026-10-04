@@ -688,7 +688,35 @@ function escapeHtml(text) {
 
 displayReminders();
 
- 
+ async function login() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const error = document.getElementById("loginError");
+
+  error.style.display = "none";
+
+  if (!email || !password) {
+    error.textContent = "Entre ton e-mail et ton mot de passe ❤️";
+    error.style.display = "block";
+    return;
+  }
+
+  try {
+    await window.signInWithEmailAndPassword(
+      window.firebaseAuth,
+      email,
+      password
+    );
+
+    document.getElementById("loginScreen").style.display = "none";
+
+  } catch (err) {
+    console.error(err);
+
+    error.textContent = "E-mail ou mot de passe incorrect.";
+    error.style.display = "block";
+  }
+}
 
 </script>
 
