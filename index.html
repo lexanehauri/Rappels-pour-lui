@@ -341,45 +341,7 @@ import {
 const messaging =
   getMessaging(firebaseApp);
 
-navigator.serviceWorker
-  .register("./firebase-messaging-sw.js")
-  .then((registration) => {
-
-    return getToken(messaging, {
-      vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z8nQxvE",
-      serviceWorkerRegistration: registration
-    });
-
-  })
-  .then((token) => {
-
-    console.log(
-      "TOKEN FCM :",
-      token
-    );
-
-    alert(
-      token
-        ? "TOKEN FCM récupéré ❤️"
-        : "PAS DE TOKEN"
-    );
-
-  })
-  .catch((error) => {
-
-     console.error(
-      "ERREUR FCM COMPLÈTE :",
-      error
-    );
-
-    alert(
-      "ERREUR FCM\n\n" +
-      "Code : " +
-      (error.code || "inconnu") +
-      "\n\nMessage : " +
-      (error.message || "inconnu")
-
-  });
+Uncaught SyntaxError: missing ) after argument list
 
 const auth =
   getAuth(firebaseApp);
