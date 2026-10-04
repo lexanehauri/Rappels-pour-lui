@@ -435,7 +435,27 @@
     }
   }
 });
+window.login = async function() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const error = document.getElementById("loginError");
 
+  error.style.display = "none";
+
+  if (!email || !password) {
+    error.textContent = "Entre ton e-mail et ton mot de passe ❤️";
+    error.style.display = "block";
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    console.error("Erreur de connexion :", err);
+    error.textContent = "E-mail ou mot de passe incorrect.";
+    error.style.display = "block";
+  }
+};
   console.log("Firebase connecté ❤️");
 </script>
 </script>
