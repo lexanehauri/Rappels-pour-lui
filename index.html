@@ -356,8 +356,7 @@ const db =
       return;
     }
 
-    // Collez la clé trouvée dans Firebase entre les guillemets
-    const vapidKey = "VOTRE_CLE_VAPID_ICI"; 
+    const vapidKey = "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z8nQxvE"; 
 
     const token = await getToken(messaging, { vapidKey: vapidKey });
 
@@ -471,7 +470,7 @@ const db =
 
         loginError.textContent =
           "Connexion impossible : " +
-          error.code;
+          error.message;
 
         loginError.style.display =
           "block";
