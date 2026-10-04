@@ -351,6 +351,25 @@ import {
   console.log("Permission notifications :", permission);
 });
 
+    if (Notification.permission === "granted") {
+
+  getToken(messaging)
+    .then((token) => {
+
+      console.log("TOKEN FCM :", token);
+
+    })
+    .catch((error) => {
+
+      console.error(
+        "Erreur récupération token FCM :",
+        error
+      );
+
+    });
+
+}
+    
     /* =========================
        ELEMENTS
     ========================= */
