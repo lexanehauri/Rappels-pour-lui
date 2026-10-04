@@ -418,31 +418,48 @@ const db =
        CONNEXION
     ========================= */
 
-    async function requestNotificationPermission() {
+   async function requestNotificationPermission(user) {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      console.log("Permission notifications refusée");
+      return;
+    }
 
-  const permission =
-    await Notification.requestPermission();
+    // Remplace TA_CLE_VAPID_ICI par la clé copiée sur Firebase
+    const vapidKey = "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z8nQxvE"; 
 
-  if (permission !== "granted") {
-    console.log("Notifications refusées");
-    return;
+    const token = await getToken(messaging, { vapidKey: vapidKey });
+
+    if (token) {
+      console.log("Token FCM enregistré :", token);
+      await setDoc(doc(db, "fcmTokens", user.uid), {
+        token: token,
+        updatedAt: serverTimestamp()
+      });
+      console.log("Token enregistré dans Firestore !");
+    }
+  } catch (error) {
+    console.error("Erreur token notification :", error);
   }
-
-  console.log("Notifications autorisées");
 }
 
-    
-    loginButton.addEventListener("click", async () => {
 
-      const email =
-        loginEmail.value.trim();
+/* =========================
+   CONNEXION
+========================= */
 
-      const password =
-        loginPassword.value;
+loginButton.addEventListener("click", async () => {
 
-      loginError.style.display = "none";
+  const email =
+    loginEmail.value.trim();
 
-      if (!email || !password) {
+  const password =
+    loginPassword.value;
+
+  loginError.style.display = "none";
+
+  if (!email || !password) {
 
         loginError.textContent =
           "Entre ton e-mail et ton mot de passe ❤️";
