@@ -1,479 +1,277 @@
+```html
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#314f3d">
 
   <title>Mes rappels ❤️</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f4f1eb;
-      color: #26352d;
+      font-family: Arial, sans-serif;
+      background: #f6f3ef;
+      color: #314f3d;
     }
 
-    .app {
-      max-width: 600px;
-      margin: auto;
-      padding: 25px 18px 40px;
-      display: none;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    h1 {
-      margin-bottom: 5px;
-      font-size: 30px;
-    }
-
-    .subtitle {
-      color: #68756d;
-    }
-
-    .add-box {
-      background: white;
-      padding: 18px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
-    }
-
-    input, button {
-      font: inherit;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      background: #fafafa;
-    }
-
-    .row {
+    #loginScreen {
+      min-height: 100vh;
       display: flex;
-      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .row input {
-      flex: 1;
+    .loginBox {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .loginBox h1 {
+      margin-top: 0;
+    }
+
+    .loginBox input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
     }
 
     button {
       border: none;
-      border-radius: 12px;
-      padding: 12px 16px;
+      border-radius: 10px;
+      padding: 12px 18px;
       cursor: pointer;
+      font-size: 15px;
     }
 
-    .add {
+    .loginButton {
       width: 100%;
+      margin-top: 10px;
       background: #314f3d;
       color: white;
-      font-weight: bold;
+    }
+
+    #loginError {
+      display: none;
+      margin-top: 15px;
+      color: #b3261e;
+    }
+
+    #app {
+      display: none;
+      max-width: 800px;
+      margin: auto;
+      padding: 25px 20px 50px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    .logout {
+      background: #e8e3dc;
+      color: #314f3d;
+    }
+
+    .addBox {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .addBox input,
+    .addBox select {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    .addButton {
+      width: 100%;
+      margin-top: 8px;
+      background: #314f3d;
+      color: white;
     }
 
     .reminder {
       background: white;
-      border-radius: 18px;
-      padding: 15px;
+      padding: 17px;
+      border-radius: 15px;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
     }
 
     .reminder.done {
       opacity: 0.55;
     }
 
-    .reminder.done .title {
-      text-decoration: line-through;
-    }
-
-    .check {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      border: 2px solid #557761;
-      padding: 0;
-      flex-shrink: 0;
-      background: white;
-    }
-
-    .check.checked {
-      background: #557761;
-      color: white;
-    }
-
-    .info {
+    .reminderContent {
       flex: 1;
     }
 
-    .title {
-      font-weight: 600;
-      margin-bottom: 4px;
+    .reminderTitle {
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    .date {
+    .reminderInfo {
       font-size: 13px;
-      color: #7b857e;
+      color: #777;
     }
 
-    .delete {
-      background: #f4e5e3;
-      color: #9a4c43;
-      padding: 8px 10px;
+    .deleteButton {
+      background: #f1dddd;
+      color: #8b2e2e;
     }
 
     .empty {
       text-align: center;
-      color: #89938d;
-      margin-top: 35px;
+      color: #888;
+      padding: 30px;
     }
-
   </style>
-
 </head>
 
 <body>
 
-  <!-- ÉCRAN DE CONNEXION -->
+  <!-- CONNEXION -->
 
-  <div id="loginScreen" style="
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:25px;
-  ">
+  <div id="loginScreen">
 
-```
-<div class="add-box" style="
-  width:100%;
-  max-width:400px;
-  text-align:center;
-">
+    <div class="loginBox">
 
-  <h1>Mes rappels ❤️</h1>
+      <h1>Mes rappels ❤️</h1>
 
-  <p class="subtitle">
-    Connecte-toi pour accéder à tes rappels.
-  </p>
+      <p>Connecte-toi pour accéder à tes rappels.</p>
 
-  <input
-    type="email"
-    id="loginEmail"
-    placeholder="Adresse e-mail"
-    autocomplete="email"
-  >
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="Adresse e-mail"
+        autocomplete="email"
+      >
 
-  <input
-    type="password"
-    id="loginPassword"
-    placeholder="Mot de passe"
-    autocomplete="current-password"
-  >
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="Mot de passe"
+        autocomplete="current-password"
+      >
 
-  <button class="add" onclick="login()">
-    Se connecter
-  </button>
+      <button
+        class="loginButton"
+        id="loginButton"
+      >
+        Se connecter
+      </button>
 
-  <p id="loginError" style="
-    color:#9a4c43;
-    margin-top:12px;
-    display:none;
-  "></p>
+      <div id="loginError"></div>
 
-</div>
-```
+    </div>
 
   </div>
+
 
   <!-- APPLICATION -->
 
-  <div class="app" id="app">
+  <main id="app">
 
-```
-<header>
+    <div class="header">
 
-  <h1>Mes rappels ❤️</h1>
+      <h1>Mes rappels ❤️</h1>
 
-  <div class="subtitle">
-    N'oublie rien, même les petites choses.
-  </div>
+      <button
+        class="logout"
+        id="logoutButton"
+      >
+        Se déconnecter
+      </button>
 
-</header>
+    </div>
 
 
-<div class="add-box">
+    <!-- AJOUT RAPPEL -->
 
-  <input
-    type="text"
-    id="title"
-    placeholder="Que dois-tu faire ?"
-  >
+    <section class="addBox">
 
-  <div class="row">
+      <h2>Ajouter un rappel</h2>
 
-    <input type="date" id="date">
+      <input
+        id="reminderTitle"
+        type="text"
+        placeholder="Ex : Acheter du lait"
+      >
 
-    <input type="time" id="time">
+      <input
+        id="reminderDate"
+        type="datetime-local"
+      >
 
-  </div>
+      <select id="reminderFor">
 
-  <button class="add" onclick="addReminder()">
-    + Ajouter un rappel
-  </button>
+        <option value="me">
+          Pour moi
+        </option>
 
-</div>
+        <option value="partner">
+          Pour mon/ma partenaire
+        </option>
 
+      </select>
 
-<div id="reminders"></div>
-```
+      <button
+        class="addButton"
+        id="addReminderButton"
+      >
+        Ajouter le rappel
+      </button>
 
-  </div>
+    </section>
 
-  <!-- RAPPELS LOCAUX -->
 
-  <script>
+    <!-- LISTE -->
 
-    let reminders =
-      JSON.parse(localStorage.getItem("reminders")) || [];
+    <section>
 
+      <h2>Rappels</h2>
 
-    function save() {
+      <div id="remindersList"></div>
 
-      localStorage.setItem(
-        "reminders",
-        JSON.stringify(reminders)
-      );
+    </section>
 
-    }
+  </main>
 
-
-    function addReminder() {
-
-      const title =
-        document.getElementById("title").value.trim();
-
-      const date =
-        document.getElementById("date").value;
-
-      const time =
-        document.getElementById("time").value;
-
-
-      if (!title) {
-
-        alert("Écris d'abord ce que tu dois faire ❤️");
-
-        return;
-
-      }
-
-
-      reminders.push({
-
-        id: Date.now(),
-
-        title: title,
-
-        date: date,
-
-        time: time,
-
-        done: false
-
-      });
-
-
-      save();
-
-
-      document.getElementById("title").value = "";
-
-      document.getElementById("date").value = "";
-
-      document.getElementById("time").value = "";
-
-
-      displayReminders();
-
-    }
-
-
-    function toggleReminder(id) {
-
-      const reminder =
-        reminders.find(r => r.id === id);
-
-
-      if (reminder) {
-
-        reminder.done = !reminder.done;
-
-      }
-
-
-      save();
-
-      displayReminders();
-
-    }
-
-
-    function deleteReminder(id) {
-
-      reminders =
-        reminders.filter(r => r.id !== id);
-
-
-      save();
-
-      displayReminders();
-
-    }
-
-
-    function displayReminders() {
-
-      const container =
-        document.getElementById("reminders");
-
-
-      container.innerHTML = "";
-
-
-      if (reminders.length === 0) {
-
-        container.innerHTML =
-          '<div class="empty">Aucun rappel pour le moment 🌿</div>';
-
-        return;
-
-      }
-
-
-      reminders.sort((a, b) => {
-
-        const dateA =
-          (a.date || "") + (a.time || "");
-
-        const dateB =
-          (b.date || "") + (b.time || "");
-
-        return dateA.localeCompare(dateB);
-
-      });
-
-
-      reminders.forEach(reminder => {
-
-        const element =
-          document.createElement("div");
-
-
-        element.className =
-          "reminder " +
-          (reminder.done ? "done" : "");
-
-
-        let details = "";
-
-
-        if (reminder.date) {
-
-          details +=
-            new Date(
-              reminder.date + "T00:00:00"
-            ).toLocaleDateString("fr-FR");
-
-
-          if (reminder.time) {
-
-            details +=
-              " à " + reminder.time;
-
-          }
-
-        } else if (reminder.time) {
-
-          details =
-            "À " + reminder.time;
-
-        }
-
-
-        element.innerHTML = `
-
-          <button
-            class="check ${reminder.done ? "checked" : ""}"
-            onclick="toggleReminder(${reminder.id})"
-          >
-            ${reminder.done ? "✓" : ""}
-          </button>
-
-          <div class="info">
-
-            <div class="title">
-              ${escapeHtml(reminder.title)}
-            </div>
-
-            <div class="date">
-              ${details}
-            </div>
-
-          </div>
-
-          <button
-            class="delete"
-            onclick="deleteReminder(${reminder.id})"
-          >
-            🗑️
-          </button>
-
-        `;
-
-
-        container.appendChild(element);
-
-      });
-
-    }
-
-
-    function escapeHtml(text) {
-
-      const div =
-        document.createElement("div");
-
-      div.textContent = text;
-
-      return div.innerHTML;
-
-    }
-
-  </script>
 
   <!-- FIREBASE -->
 
@@ -481,18 +279,32 @@
 
     import {
       initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
     import {
       getAuth,
       signInWithEmailAndPassword,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
     import {
-      getFirestore
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+      getFirestore,
+      collection,
+      addDoc,
+      deleteDoc,
+      updateDoc,
+      doc,
+      query,
+      orderBy,
+      onSnapshot,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
+
+    /* =========================
+       FIREBASE
+    ========================= */
 
     const firebaseConfig = {
 
@@ -517,52 +329,79 @@
     };
 
 
-    const app =
+    const firebaseApp =
       initializeApp(firebaseConfig);
 
-
     const auth =
-      getAuth(app);
-console.log("Firebase Auth OK");
-console.log("Projet Firebase :", firebaseConfig.projectId);
-console.log("Clé API présente :", !!firebaseConfig.apiKey);
+      getAuth(firebaseApp);
 
     const db =
-      getFirestore(app);
+      getFirestore(firebaseApp);
 
 
-    window.firebaseAuth = auth;
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const loginScreen =
+      document.getElementById("loginScreen");
+
+    const appScreen =
+      document.getElementById("app");
+
+    const loginEmail =
+      document.getElementById("loginEmail");
+
+    const loginPassword =
+      document.getElementById("loginPassword");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const loginError =
+      document.getElementById("loginError");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
+    const reminderTitle =
+      document.getElementById("reminderTitle");
+
+    const reminderDate =
+      document.getElementById("reminderDate");
+
+    const reminderFor =
+      document.getElementById("reminderFor");
+
+    const addReminderButton =
+      document.getElementById("addReminderButton");
+
+    const remindersList =
+      document.getElementById("remindersList");
 
 
-    window.login = async function() {
+    /* =========================
+       CONNEXION
+    ========================= */
+
+    loginButton.addEventListener("click", async () => {
 
       const email =
-        document.getElementById("loginEmail")
-          .value
-          .trim();
-
+        loginEmail.value.trim();
 
       const password =
-        document.getElementById("loginPassword")
-          .value;
+        loginPassword.value;
 
-
-      const error =
-        document.getElementById("loginError");
-
-
-      error.style.display = "none";
-
+      loginError.style.display = "none";
 
       if (!email || !password) {
 
-        error.textContent =
+        loginError.textContent =
           "Entre ton e-mail et ton mot de passe ❤️";
 
-        error.style.display = "block";
+        loginError.style.display = "block";
 
         return;
-
       }
 
 
@@ -574,98 +413,411 @@ console.log("Clé API présente :", !!firebaseConfig.apiKey);
           password
         );
 
-      } catch (err) {
+      } catch (error) {
 
         console.error(
-          "Erreur de connexion :",
-          err
+          "Erreur Firebase :",
+          error
         );
 
-       error.textContent =
-  "Erreur Firebase : " + err.code;
+        loginError.textContent =
+          "Connexion impossible : " +
+          error.code;
 
-        error.style.display = "block";
-
-      }
-
-    };
-
-
-    onAuthStateChanged(auth, (user) => {
-
-      const loginScreen =
-        document.getElementById("loginScreen");
-
-      const appScreen =
-        document.getElementById("app");
-
-
-      if (user) {
-
-        console.log(
-          "Utilisateur connecté :",
-          user.email
-        );
-
-        loginScreen.style.display = "none";
-
-        appScreen.style.display = "block";
-
-        displayReminders();
-
-      } else {
-
-        console.log(
-          "Aucun utilisateur connecté"
-        );
-
-        loginScreen.style.display = "flex";
-
-        appScreen.style.display = "none";
-
+        loginError.style.display =
+          "block";
       }
 
     });
 
 
-    console.log("Firebase connecté ❤️");
+    /* =========================
+       DECONNEXION
+    ========================= */
 
-  </script>
+    logoutButton.addEventListener(
+      "click",
+      async () => {
 
-  <!-- SERVICE WORKER -->
+        await signOut(auth);
 
-  <script>
+      }
+    );
 
-    if ("serviceWorker" in navigator) {
 
-      window.addEventListener("load", () => {
+    /* =========================
+       UTILISATEUR CONNECTE
+    ========================= */
 
-        navigator.serviceWorker
-          .register("./service-worker.js")
+    let unsubscribeReminders = null;
 
-          .then(() => {
 
-            console.log(
-              "Service worker activé"
+    onAuthStateChanged(
+      auth,
+      (user) => {
+
+        if (!user) {
+
+          loginScreen.style.display =
+            "flex";
+
+          appScreen.style.display =
+            "none";
+
+          if (unsubscribeReminders) {
+
+            unsubscribeReminders();
+
+            unsubscribeReminders =
+              null;
+          }
+
+          return;
+        }
+
+
+        console.log(
+          "Utilisateur connecté :",
+          user.email,
+          user.uid
+        );
+
+
+        loginScreen.style.display =
+          "none";
+
+        appScreen.style.display =
+          "block";
+
+
+        listenToReminders();
+
+      }
+    );
+
+
+    /* =========================
+       RAPPELS
+    ========================= */
+
+    function listenToReminders() {
+
+      if (unsubscribeReminders) {
+
+        unsubscribeReminders();
+
+      }
+
+
+      const remindersQuery =
+        query(
+          collection(db, "reminders"),
+          orderBy("date", "asc")
+        );
+
+
+      unsubscribeReminders =
+        onSnapshot(
+          remindersQuery,
+
+          (snapshot) => {
+
+            remindersList.innerHTML = "";
+
+
+            if (snapshot.empty) {
+
+              remindersList.innerHTML =
+                '<div class="empty">Aucun rappel pour le moment ❤️</div>';
+
+              return;
+            }
+
+
+            snapshot.forEach(
+              (reminderDoc) => {
+
+                const reminder =
+                  reminderDoc.data();
+
+                displayReminder(
+                  reminderDoc.id,
+                  reminder
+                );
+
+              }
             );
 
-          })
+          },
 
-          .catch(error => {
+          (error) => {
 
             console.error(
-              "Erreur service worker :",
+              "Erreur Firestore :",
               error
             );
 
-          });
-
-      });
+            remindersList.innerHTML =
+              `<div class="empty">
+                Erreur Firestore : ${error.code}
+              </div>`;
+          }
+        );
 
     }
+
+
+    /* =========================
+       AFFICHAGE
+    ========================= */
+
+    function displayReminder(
+      id,
+      reminder
+    ) {
+
+      const element =
+        document.createElement("div");
+
+      element.className =
+        "reminder";
+
+      if (reminder.done) {
+
+        element.classList.add("done");
+
+      }
+
+
+      const content =
+        document.createElement("div");
+
+      content.className =
+        "reminderContent";
+
+
+      const title =
+        document.createElement("div");
+
+      title.className =
+        "reminderTitle";
+
+      title.textContent =
+        reminder.title;
+
+
+      const info =
+        document.createElement("div");
+
+      info.className =
+        "reminderInfo";
+
+
+      let dateText = "";
+
+      if (reminder.date) {
+
+        const date =
+          new Date(reminder.date);
+
+        dateText =
+          date.toLocaleString(
+            "fr-CH",
+            {
+              dateStyle: "short",
+              timeStyle: "short"
+            }
+          );
+      }
+
+
+      info.textContent =
+        `Pour : ${reminder.targetName || "—"} • ${dateText}`;
+
+
+      content.appendChild(title);
+
+      content.appendChild(info);
+
+
+      const checkbox =
+        document.createElement("input");
+
+      checkbox.type =
+        "checkbox";
+
+      checkbox.checked =
+        reminder.done === true;
+
+
+      checkbox.addEventListener(
+        "change",
+        async () => {
+
+          await updateDoc(
+            doc(
+              db,
+              "reminders",
+              id
+            ),
+            {
+              done:
+                checkbox.checked
+            }
+          );
+
+        }
+      );
+
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.className =
+        "deleteButton";
+
+      deleteButton.textContent =
+        "Supprimer";
+
+
+      deleteButton.addEventListener(
+        "click",
+        async () => {
+
+          await deleteDoc(
+            doc(
+              db,
+              "reminders",
+              id
+            )
+          );
+
+        }
+      );
+
+
+      element.appendChild(
+        checkbox
+      );
+
+      element.appendChild(
+        content
+      );
+
+      element.appendChild(
+        deleteButton
+      );
+
+
+      remindersList.appendChild(
+        element
+      );
+
+    }
+
+
+    /* =========================
+       AJOUTER UN RAPPEL
+    ========================= */
+
+    addReminderButton.addEventListener(
+      "click",
+      async () => {
+
+        const user =
+          auth.currentUser;
+
+        if (!user) return;
+
+
+        const title =
+          reminderTitle.value.trim();
+
+        const date =
+          reminderDate.value;
+
+        const target =
+          reminderFor.value;
+
+
+        if (!title || !date) {
+
+          alert(
+            "Ajoute un texte et une date ❤️"
+          );
+
+          return;
+        }
+
+
+        const targetName =
+          target === "me"
+            ? user.email
+            : "Partenaire";
+
+
+        try {
+
+          await addDoc(
+            collection(
+              db,
+              "reminders"
+            ),
+            {
+
+              title:
+                title,
+
+              date:
+                date,
+
+              target:
+                target,
+
+              targetName:
+                targetName,
+
+              createdBy:
+                user.uid,
+
+              createdByEmail:
+                user.email,
+
+              done:
+                false,
+
+              createdAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          reminderTitle.value =
+            "";
+
+          reminderDate.value =
+            "";
+
+        } catch (error) {
+
+          console.error(
+            "Erreur création rappel :",
+            error
+          );
+
+          alert(
+            "Erreur Firestore : " +
+            error.code
+          );
+
+        }
+
+      }
+    );
 
   </script>
 
 </body>
-
 </html>
+```
