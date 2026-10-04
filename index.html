@@ -523,7 +523,9 @@
 
     const auth =
       getAuth(app);
-
+console.log("Firebase Auth OK");
+console.log("Projet Firebase :", firebaseConfig.projectId);
+console.log("Clé API présente :", !!firebaseConfig.apiKey);
 
     const db =
       getFirestore(app);
