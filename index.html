@@ -347,6 +347,9 @@ import {
     const db =
       getFirestore(firebaseApp);
 
+    Notification.requestPermission().then((permission) => {
+  console.log("Permission notifications :", permission);
+});
 
     /* =========================
        ELEMENTS
