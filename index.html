@@ -341,8 +341,6 @@ import {
 const messaging =
   getMessaging(firebaseApp);
 
-Uncaught SyntaxError: missing ) after argument list
-
 const auth =
   getAuth(firebaseApp);
 
@@ -353,25 +351,7 @@ const db =
   console.log("Permission notifications :", permission);
 });
 
-    if (Notification.permission === "granted") {
 
-  getToken(messaging)
-    .then((token) => {
-
-      console.log("TOKEN FCM :", token);
-
-    })
-    .catch((error) => {
-
-      console.error(
-        "Erreur récupération token FCM :",
-        error
-      );
-
-    });
-
-}
-    
     /* =========================
        ELEMENTS
     ========================= */
