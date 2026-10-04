@@ -367,15 +367,17 @@ navigator.serviceWorker
   })
   .catch((error) => {
 
-    console.error(
-      "ERREUR TOKEN FCM :",
+     console.error(
+      "ERREUR FCM COMPLÈTE :",
       error
     );
 
     alert(
-      "Erreur FCM : " +
-      error.message
-    );
+      "ERREUR FCM\n\n" +
+      "Code : " +
+      (error.code || "inconnu") +
+      "\n\nMessage : " +
+      (error.message || "inconnu")
 
   });
 
