@@ -393,6 +393,20 @@ import {
        CONNEXION
     ========================= */
 
+    async function requestNotificationPermission() {
+
+  const permission =
+    await Notification.requestPermission();
+
+  if (permission !== "granted") {
+    console.log("Notifications refusées");
+    return;
+  }
+
+  console.log("Notifications autorisées");
+}
+
+    
     loginButton.addEventListener("click", async () => {
 
       const email =
