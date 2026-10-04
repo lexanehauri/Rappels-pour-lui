@@ -418,13 +418,23 @@
   window.signInWithEmailAndPassword = signInWithEmailAndPassword;
   window.signOut = signOut;
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("Utilisateur connecté :", user.email);
-    } else {
-      console.log("Aucun utilisateur connecté");
+ onAuthStateChanged(auth, (user) => {
+  const loginScreen = document.getElementById("loginScreen");
+
+  if (user) {
+    console.log("Utilisateur connecté :", user.email);
+
+    if (loginScreen) {
+      loginScreen.style.display = "none";
     }
-  });
+  } else {
+    console.log("Aucun utilisateur connecté");
+
+    if (loginScreen) {
+      loginScreen.style.display = "flex";
+    }
+  }
+});
 
   console.log("Firebase connecté ❤️");
 </script>
