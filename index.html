@@ -340,6 +340,26 @@ import {
 
     const messaging =
   getMessaging(firebaseApp);
+
+getToken(messaging, {
+  vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z8nQxvE"
+})
+.then((token) => {
+
+  console.log(
+    "TOKEN FCM :",
+    token
+  );
+
+})
+.catch((error) => {
+
+  console.error(
+    "ERREUR TOKEN FCM :",
+    error
+  );
+
+});
     
     const auth =
       getAuth(firebaseApp);
