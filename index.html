@@ -292,7 +292,42 @@
 
 <body>
 
- 
+ <div id="loginScreen" style="
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+">
+  <div class="add-box" style="width:100%;max-width:400px;text-align:center;">
+    <h1>Mes rappels ❤️</h1>
+    <p class="subtitle">Connecte-toi pour accéder à tes rappels.</p>
+
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Adresse e-mail"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Mot de passe"
+      autocomplete="current-password"
+    >
+
+    <button class="add" onclick="login()">
+      Se connecter
+    </button>
+
+    <p id="loginError" style="
+      color:#9a4c43;
+      margin-top:12px;
+      display:none;
+    "></p>
+  </div>
+</div>
 
 <div class="app">
 
