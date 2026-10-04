@@ -296,6 +296,7 @@
       updateDoc,
       doc,
       query,
+      where,
       orderBy,
       onSnapshot,
       serverTimestamp
@@ -509,11 +510,12 @@
       }
 
 
-      const remindersQuery =
-        query(
-          collection(db, "reminders"),
-          orderBy("date", "asc")
-        );
+    const remindersQuery =
+  query(
+    collection(db, "reminders"),
+    where("targetUid", "==", auth.currentUser.uid),
+    orderBy("date", "asc")
+  );
 
 
       unsubscribeReminders =
@@ -749,11 +751,20 @@
           return;
         }
 
+const partnerUid =
+  user.uid === "tDuHiMs8JGgBXDmnRYyeqSzK0nf2"
+    ? "pesUcsHxlMQtW26ec8W2os2U7i42"
+    : "tDuHiMs8JGgBXDmnRYyeqSzK0nf2";
+        
+       const targetUid =
+  target === "me"
+    ? user.uid
+    : partnerUid;
 
-        const targetName =
-          target === "me"
-            ? user.email
-            : "Partenaire";
+const targetName =
+  target === "me"
+    ? user.email
+    : "Partenaire";
 
 
         try {
@@ -777,6 +788,9 @@
               targetName:
                 targetName,
 
+              targetUid:
+                targetUid,
+              
               createdBy:
                 user.uid,
 
