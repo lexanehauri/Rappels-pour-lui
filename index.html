@@ -253,7 +253,7 @@
 
   </div>
 
-  <!-- RAPPELS LOCAUX : ON LES GARDE POUR L'INSTANT -->
+  <!-- RAPPELS LOCAUX -->
 
   <script>
 
@@ -473,9 +473,6 @@
 
     }
 
-
-    displayReminders();
-
   </script>
 
   <!-- FIREBASE -->
@@ -489,8 +486,7 @@
     import {
       getAuth,
       signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
     import {
@@ -501,7 +497,7 @@
     const firebaseConfig = {
 
       apiKey:
-        "AIzaSyCVRjsFQUcbioyQcaWcQ_fG3QLa2ZwEQj4",
+        "AIzaSyCVRjsFQUcbioyCcaWcQ_fG3QLa2ZwEQj4",
 
       authDomain:
         "rappels-pour-lui.firebaseapp.com",
@@ -612,6 +608,8 @@
         loginScreen.style.display = "none";
 
         appScreen.style.display = "block";
+
+        displayReminders();
 
       } else {
 
