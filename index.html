@@ -356,7 +356,26 @@
 
 <script>
 
- 
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCVRjsFQUcbioyQcaWcQ_fG3QLa2ZwEQj4",
+    authDomain: "rappels-pour-lui.firebaseapp.com",
+    projectId: "rappels-pour-lui",
+    storageBucket: "rappels-pour-lui.firebasestorage.app",
+    messagingSenderId: "232679000779",
+    appId: "1:232679000779:web:d97745ece1e16e4f9c294e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  console.log("Firebase connecté ❤️");
+</script>
 
 let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
