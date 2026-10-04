@@ -512,6 +512,7 @@ import {
         appScreen.style.display =
           "block";
 
+        await requestNotificationPermission();
 
         listenToReminders();
 
