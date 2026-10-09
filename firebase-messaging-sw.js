@@ -2,7 +2,7 @@ importScripts("https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js
 importScripts("https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging-compat.js");
 
 firebase.initializeApp({
-  apiKey: "AIzaSyCVRjsFQUcbioyQcaWcQ_fG3QLa2ZwEQj4",
+  apiKey: "AIzaSyCWpfLlwMpTbN6UkH_l7r_lfKZoEjpLXHE",,
   authDomain: "rappels-pour-lui.firebaseapp.com",
   projectId: "rappels-pour-lui",
   storageBucket: "rappels-pour-lui.firebasestorage.app",
