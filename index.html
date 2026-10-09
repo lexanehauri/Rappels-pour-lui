@@ -236,7 +236,12 @@
     <section class="addBox">
 
       <h2>Ajouter un rappel</h2>
+<button id="notificationButton" class="addButton">
+  Activer les notifications ❤️
+</button>
 
+<p id="notificationStatus"></p>
+      
       <input
         id="reminderTitle"
         type="text"
@@ -297,6 +302,10 @@
       onSnapshot,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import {
+      getMessaging,
+      getToken
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging.js";
 
 
     /* =========================
@@ -316,6 +325,114 @@
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
 
+const notificationButton = document.getElementById("notificationButton");
+const notificationStatus = document.getElementById("notificationStatus");
+
+if (notificationButton && notificationStatus) {
+  notificationButton.addEventListener("click", async () => {
+    notificationButton.disabled = true;
+    notificationStatus.textContent = "Activation en cours...";
+
+    try {
+      if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+        throw new Error("Notifications non prises en charge sur ce navigateur.");
+      }
+
+      const permission = await Notification.requestPermission();
+
+      if (permission !== "granted") {
+        throw new Error("Autorisation des notifications refusée.");
+      }
+
+      const registration = await navigator.serviceWorker.register(
+        "./firebase-messaging-sw.js"
+      );
+
+      await navigator.serviceWorker.ready;
+
+      const messaging = getMessaging(firebaseApp);
+
+      const token = await getToken(messaging, {
+        vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z",
+        serviceWorkerRegistration: registration
+      });
+
+      if (!token) {
+        throw new Error("Firebase n'a pas fourni de token.");
+      }
+
+      console.log("Token FCM obtenu :", token);
+      notificationStatus.textContent = "Token FCM obtenu ❤️";
+
+    } catch (error) {
+      console.error("Erreur FCM :", error);
+      notificationStatus.textContent = "Erreur : " + error.message;
+
+    } finally {
+      notificationButton.disabled = false;
+    }
+  });
+}
+const notificationButton =
+  document.getElementById("notificationButton");
+
+const notificationStatus =
+  document.getElementById("notificationStatus");
+
+if (notificationButton && notificationStatus) {
+  notificationButton.addEventListener("click", async () => {
+    notificationButton.disabled = true;
+    notificationStatus.textContent = "Activation en cours...";
+
+    try {
+      if (!("Notification" in window) ||
+          !("serviceWorker" in navigator)) {
+        throw new Error(
+          "Les notifications ne sont pas prises en charge ici."
+        );
+      }
+
+      const permission = await Notification.requestPermission();
+
+      if (permission !== "granted") {
+        throw new Error(
+          "Autorisation refusée. Vérifie les réglages de notifications."
+        );
+      }
+
+      const registration = await navigator.serviceWorker.register(
+        "./firebase-messaging-sw.js"
+      );
+
+      await navigator.serviceWorker.ready;
+
+      const messaging = getMessaging(firebaseApp);
+
+      const token = await getToken(messaging, {
+        vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z",
+        serviceWorkerRegistration: registration
+      });
+
+      if (!token) {
+        throw new Error("Firebase n'a pas fourni de token.");
+      }
+
+      console.log("Token FCM obtenu :", token);
+
+      notificationStatus.textContent =
+        "Token FCM obtenu ❤️";
+
+    } catch (error) {
+      console.error("Erreur FCM :", error);
+
+      notificationStatus.textContent =
+        "Erreur : " + error.message;
+
+    } finally {
+      notificationButton.disabled = false;
+    }
+  });
+}
 
     /* =========================
        ELEMENTS
