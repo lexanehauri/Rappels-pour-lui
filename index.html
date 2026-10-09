@@ -1,11 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Mes rappels ❤️</title>
 
   <style>
@@ -122,6 +120,10 @@
       color: white;
     }
 
+    #notificationStatus {
+      overflow-wrap: anywhere;
+    }
+
     .reminder {
       background: white;
       padding: 17px;
@@ -188,9 +190,7 @@
 
   <div id="loginScreen">
     <div class="loginBox">
-
       <h1>Mes rappels ❤️</h1>
-
       <p>Connecte-toi pour accéder à tes rappels.</p>
 
       <input
@@ -212,36 +212,32 @@
       </button>
 
       <div id="loginError"></div>
-
     </div>
   </div>
-
 
   <!-- APPLICATION -->
 
   <main id="app">
 
     <div class="header">
-
       <h1>Mes rappels ❤️</h1>
 
       <button class="logout" id="logoutButton">
         Se déconnecter
       </button>
-
     </div>
 
     <!-- AJOUT RAPPEL -->
 
     <section class="addBox">
-
       <h2>Ajouter un rappel</h2>
-<button id="notificationButton" class="addButton">
-  Activer les notifications ❤️
-</button>
 
-<p id="notificationStatus"></p>
-      
+      <button id="notificationButton" class="addButton">
+        Activer les notifications ❤️
+      </button>
+
+      <p id="notificationStatus"></p>
+
       <input
         id="reminderTitle"
         type="text"
@@ -261,10 +257,9 @@
       <button class="addButton" id="addReminderButton">
         Ajouter le rappel
       </button>
-
     </section>
 
-    <!-- LISTE -->
+    <!-- LISTE DES RAPPELS -->
 
     <section>
       <h2>Rappels</h2>
@@ -272,7 +267,6 @@
     </section>
 
   </main>
-
 
   <!-- FIREBASE -->
 
@@ -302,11 +296,11 @@
       onSnapshot,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
     import {
       getMessaging,
       getToken
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging.js";
-
 
     /* =========================
        FIREBASE
@@ -325,115 +319,6 @@
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
 
-const notificationButton = document.getElementById("notificationButton");
-const notificationStatus = document.getElementById("notificationStatus");
-
-if (notificationButton && notificationStatus) {
-  notificationButton.addEventListener("click", async () => {
-    notificationButton.disabled = true;
-    notificationStatus.textContent = "Activation en cours...";
-
-    try {
-      if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-        throw new Error("Notifications non prises en charge sur ce navigateur.");
-      }
-
-      const permission = await Notification.requestPermission();
-
-      if (permission !== "granted") {
-        throw new Error("Autorisation des notifications refusée.");
-      }
-
-      const registration = await navigator.serviceWorker.register(
-        "./firebase-messaging-sw.js"
-      );
-
-      await navigator.serviceWorker.ready;
-
-      const messaging = getMessaging(firebaseApp);
-
-      const token = await getToken(messaging, {
-        vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z",
-        serviceWorkerRegistration: registration
-      });
-
-      if (!token) {
-        throw new Error("Firebase n'a pas fourni de token.");
-      }
-
-      console.log("Token FCM obtenu :", token);
-      notificationStatus.textContent = "Token FCM obtenu ❤️";
-
-    } catch (error) {
-      console.error("Erreur FCM :", error);
-      notificationStatus.textContent = "Erreur : " + error.message;
-
-    } finally {
-      notificationButton.disabled = false;
-    }
-  });
-}
-const notificationButton =
-  document.getElementById("notificationButton");
-
-const notificationStatus =
-  document.getElementById("notificationStatus");
-
-if (notificationButton && notificationStatus) {
-  notificationButton.addEventListener("click", async () => {
-    notificationButton.disabled = true;
-    notificationStatus.textContent = "Activation en cours...";
-
-    try {
-      if (!("Notification" in window) ||
-          !("serviceWorker" in navigator)) {
-        throw new Error(
-          "Les notifications ne sont pas prises en charge ici."
-        );
-      }
-
-      const permission = await Notification.requestPermission();
-
-      if (permission !== "granted") {
-        throw new Error(
-          "Autorisation refusée. Vérifie les réglages de notifications."
-        );
-      }
-
-      const registration = await navigator.serviceWorker.register(
-        "./firebase-messaging-sw.js"
-      );
-
-      await navigator.serviceWorker.ready;
-
-      const messaging = getMessaging(firebaseApp);
-
-      const token = await getToken(messaging, {
-        vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z",
-        serviceWorkerRegistration: registration
-      });
-
-      if (!token) {
-        throw new Error("Firebase n'a pas fourni de token.");
-      }
-
-      console.log("Token FCM obtenu :", token);
-
-      notificationStatus.textContent =
-        "Token FCM obtenu ❤️";
-
-    } catch (error) {
-      console.error("Erreur FCM :", error);
-
-      notificationStatus.textContent =
-        "Erreur : " + error.message;
-
-    } finally {
-      notificationButton.disabled = false;
-    }
-  });
-}
-
     /* =========================
        ELEMENTS
     ========================= */
@@ -450,7 +335,69 @@ if (notificationButton && notificationStatus) {
     const reminderFor = document.getElementById("reminderFor");
     const addReminderButton = document.getElementById("addReminderButton");
     const remindersList = document.getElementById("remindersList");
+    const notificationButton = document.getElementById("notificationButton");
+    const notificationStatus = document.getElementById("notificationStatus");
 
+    /* =========================
+       NOTIFICATIONS
+    ========================= */
+
+    notificationButton.addEventListener("click", async () => {
+      notificationButton.disabled = true;
+      notificationStatus.textContent = "Activation en cours...";
+
+      try {
+        if (
+          !("Notification" in window) ||
+          !("serviceWorker" in navigator)
+        ) {
+          throw new Error(
+            "Notifications non prises en charge sur ce navigateur."
+          );
+        }
+
+        const permission = await Notification.requestPermission();
+
+        if (permission !== "granted") {
+          throw new Error(
+            "Autorisation des notifications refusée."
+          );
+        }
+
+        const registration =
+          await navigator.serviceWorker.register(
+            "./firebase-messaging-sw.js"
+          );
+
+        await navigator.serviceWorker.ready;
+
+        const messaging = getMessaging(firebaseApp);
+
+        const token = await getToken(messaging, {
+          vapidKey: "BKyTmqNwjbV2dTdPAYVaCmevkHoIMDpy8magkZv77yha1kzTj7fdr0GbKptAOIuuoJCu9MCA7pebv0z4Z",
+          serviceWorkerRegistration: registration
+        });
+
+        if (!token) {
+          throw new Error(
+            "Firebase n'a pas fourni de token."
+          );
+        }
+
+        console.log("Token FCM obtenu :", token);
+        notificationStatus.textContent =
+          "Token FCM obtenu ❤️";
+
+      } catch (error) {
+        console.error("Erreur FCM :", error);
+
+        notificationStatus.textContent =
+          "Erreur : " + error.message;
+
+      } finally {
+        notificationButton.disabled = false;
+      }
+    });
 
     /* =========================
        CONNEXION
@@ -475,7 +422,6 @@ if (notificationButton && notificationStatus) {
       loginButton.textContent = "Connexion...";
 
       try {
-
         await signInWithEmailAndPassword(
           auth,
           email,
@@ -483,7 +429,6 @@ if (notificationButton && notificationStatus) {
         );
 
       } catch (error) {
-
         console.error("Erreur Firebase :", error);
 
         loginError.textContent =
@@ -492,29 +437,22 @@ if (notificationButton && notificationStatus) {
         loginError.style.display = "block";
 
       } finally {
-
         loginButton.disabled = false;
         loginButton.textContent = "Se connecter";
-
       }
-
     });
-
 
     /* =========================
        DECONNEXION
     ========================= */
 
     logoutButton.addEventListener("click", async () => {
-
       try {
         await signOut(auth);
       } catch (error) {
         console.error("Erreur de déconnexion :", error);
       }
-
     });
-
 
     /* =========================
        UTILISATEUR CONNECTE
@@ -525,7 +463,6 @@ if (notificationButton && notificationStatus) {
     onAuthStateChanged(auth, (user) => {
 
       if (!user) {
-
         loginScreen.style.display = "flex";
         appScreen.style.display = "none";
 
@@ -547,9 +484,7 @@ if (notificationButton && notificationStatus) {
       appScreen.style.display = "block";
 
       listenToReminders();
-
     });
-
 
     /* =========================
        RAPPELS
@@ -575,7 +510,6 @@ if (notificationButton && notificationStatus) {
         remindersQuery,
 
         (snapshot) => {
-
           remindersList.innerHTML = "";
 
           if (snapshot.empty) {
@@ -585,30 +519,23 @@ if (notificationButton && notificationStatus) {
           }
 
           snapshot.forEach((reminderDoc) => {
-
             const reminder = reminderDoc.data();
 
             displayReminder(
               reminderDoc.id,
               reminder
             );
-
           });
-
         },
 
         (error) => {
-
           console.error("Erreur Firestore :", error);
 
           remindersList.innerHTML =
             `<div class="empty">Erreur Firestore : ${error.code}</div>`;
-
         }
       );
-
     }
-
 
     /* =========================
        AFFICHAGE
@@ -636,14 +563,12 @@ if (notificationButton && notificationStatus) {
       let dateText = "";
 
       if (reminder.date) {
-
         const date = new Date(reminder.date);
 
         dateText = date.toLocaleString("fr-CH", {
           dateStyle: "short",
           timeStyle: "short"
         });
-
       }
 
       info.textContent =
@@ -655,24 +580,22 @@ if (notificationButton && notificationStatus) {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = reminder.done === true;
-      checkbox.setAttribute("aria-label", "Rappel terminé");
+      checkbox.setAttribute(
+        "aria-label",
+        "Rappel terminé"
+      );
 
       checkbox.addEventListener("change", async () => {
-
         try {
-
           await updateDoc(
             doc(db, "reminders", id),
             { done: checkbox.checked }
           );
 
         } catch (error) {
-
           console.error("Erreur de mise à jour :", error);
           alert("Impossible de modifier ce rappel.");
-
         }
-
       });
 
       const deleteButton = document.createElement("button");
@@ -680,20 +603,17 @@ if (notificationButton && notificationStatus) {
       deleteButton.textContent = "Supprimer";
 
       deleteButton.addEventListener("click", async () => {
-
         if (!confirm("Supprimer ce rappel ?")) return;
 
         try {
-
-          await deleteDoc(doc(db, "reminders", id));
+          await deleteDoc(
+            doc(db, "reminders", id)
+          );
 
         } catch (error) {
-
           console.error("Erreur de suppression :", error);
           alert("Impossible de supprimer ce rappel.");
-
         }
-
       });
 
       element.appendChild(checkbox);
@@ -701,9 +621,7 @@ if (notificationButton && notificationStatus) {
       element.appendChild(deleteButton);
 
       remindersList.appendChild(element);
-
     }
-
 
     /* =========================
        AJOUTER UN RAPPEL
@@ -742,7 +660,6 @@ if (notificationButton && notificationStatus) {
       addReminderButton.disabled = true;
 
       try {
-
         await addDoc(
           collection(db, "reminders"),
           {
@@ -762,17 +679,13 @@ if (notificationButton && notificationStatus) {
         reminderDate.value = "";
 
       } catch (error) {
-
         console.error("Erreur création rappel :", error);
 
         alert("Erreur Firestore : " + error.message);
 
       } finally {
-
         addReminderButton.disabled = false;
-
       }
-
     });
 
   </script>
